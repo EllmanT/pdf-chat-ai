@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import {ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton} from '@clerk/nextjs'
-
-
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,17 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-      <body className="min-h-screen h-screen overflow-hidden flex flex-col">
-      <SignedOut>
+      <html lang="en">
+        <body className="flex h-screen min-h-screen flex-col overflow-hidden">
+          <SignedOut>
             <SignInButton />
           </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
-        {children}
-      </body>
-    </html>
+          {children}
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
