@@ -3,10 +3,6 @@ import "./globals.css";
 
 import {
   ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
 } from "@clerk/nextjs";
 import React from "react";
 
@@ -24,12 +20,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="flex h-screen min-h-screen flex-col overflow-hidden">
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
           {children}
         </body>
       </html>
