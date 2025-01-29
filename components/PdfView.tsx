@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Loader2Icon, RotateCw, ZoomInIcon, ZoomOutIcon } from "lucide-react";
 
-// gsutils cors set cors.json gs://chat-with-pdf-ai-ef204.appspot.com
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 function PdfView({ url }: { url: string }) {
   console.log(url);
@@ -29,6 +28,7 @@ function PdfView({ url }: { url: string }) {
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }): void => {
     setNumPages(numPages);
+    console.log(numPages);
   };
   return (
     <div className="flex flex-col items-center justify-center">
@@ -46,7 +46,7 @@ function PdfView({ url }: { url: string }) {
             Previous
           </Button>
           <p className="flex items-center justify-center">
-            {pageNumber} of (numPages)
+            {pageNumber} of {numPages}
           </p>
 
           <Button
