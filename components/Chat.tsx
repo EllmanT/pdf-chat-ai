@@ -1,13 +1,15 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { FormEvent, useEffect, useState, useTransition } from "react";
+import { FormEvent, useEffect, useRef, useState, useTransition } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Loader2Icon } from "lucide-react";
 import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { askQuestion } from "@/action/askQuestion";
+import ChatMessage from "./ChatMessage";
 
 export type Message = {
   id?: string;
@@ -21,20 +23,43 @@ function Chat({ id }: { id: string }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isPending, startTransition] = useTransition();
-
+  const bottomOfChatRef = useRef<HTMLDivElement>(null);
   const [snapshot, loading, error] = useCollection(
     user &&
       query(
-        collection(db, "user", user?.id, "files", id, "chat"),
+        collection(db, "users", user?.id, "files", id, "chat"),
         orderBy("createdAt", "asc")
       )
   );
 
   useEffect(() => {
-    if (!snapshot) return;
+    bottomOfChatRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
 
-    console.log("Updated snapshot", snapshot.docs);
-    // const lastMessage = messages.pop();
+  useEffect(() => {
+    if (!snapshot) {
+      console.log("nothing");
+      return;
+    }
+
+    const lastMessage = messages.pop();
+
+    if (lastMessage?.role === "ai" && lastMessage.message === "Thinking...") {
+      return;
+    }
+    const newMessages = snapshot.docs.map((doc) => {
+      const { role, message, createdAt } = doc.data();
+
+      return {
+        id: doc.id,
+        role,
+        message,
+        createdAt: createdAt.toDate(),
+      };
+    });
+    setMessages(newMessages);
   }, [snapshot]);
 
   const handleSubmit = (e: FormEvent) => {
@@ -74,7 +99,36 @@ function Chat({ id }: { id: string }) {
   };
   return (
     <div className=" flex h-full flex-col overflow-scroll">
-      <div className="w-full flex-1"></div>
+      <div className="w-full flex-1">
+        {loading ? (
+          <div>
+            <Loader2Icon className="mt-20 size-20 animate-spin text-indigo-600" />
+          </div>
+        ) : (
+          <div>
+            {messages.length === 0 && (
+              <ChatMessage
+                key="placeholder"
+                message={{
+                  role: "ai",
+                  message: "Ask me anything about the document!",
+                  createdAt: new Date(),
+                }}
+              />
+            )}
+            {messages.map((message, index) => (
+              <ChatMessage key={index} message={message} />
+            ))}
+            <div ref={bottomOfChatRef} />
+          </div>
+        )}
+        {messages.map((message) => (
+          <div key={message.id}>
+            <p>{message.message}</p>
+            <p></p>
+          </div>
+        ))}
+      </div>
       <form
         onSubmit={handleSubmit}
         className="sticky bottom-0 m-2 flex space-x-2 rounded-md bg-gray-100 p-5"
@@ -90,7 +144,6 @@ function Chat({ id }: { id: string }) {
           ) : (
             "Ask"
           )}
-          Ask
         </Button>
       </form>
     </div>
