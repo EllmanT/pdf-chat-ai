@@ -17,6 +17,7 @@
     "@pinecone-database/pinecone": "^4.1.0",
     "@radix-ui/react-slot": "^1.1.1",
     "@react-pdf/renderer": "^4.1.6",
+    "byte-size": "^9.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eslint-config-standard": "^17.1.0",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/byte-size": "^8.1.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

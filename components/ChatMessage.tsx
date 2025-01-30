@@ -18,14 +18,14 @@ function ChatMessage({ message }: { message: Message }) {
               <Image
                 src={user?.imageUrl}
                 alt="Profile Picture"
-                width={40}
-                height={40}
+                width={20}
+                height={20}
                 className="rounded-full"
               />
             )
           ) : (
-            <div className="flex size-10 items-center justify-center rounded-full bg-indigo-600">
-              <BotIcon className="size-10 text-white" />
+            <div className="flex size-5 items-center justify-center rounded-full bg-indigo-600">
+              <BotIcon className="size-5 text-white" />
             </div>
           )}
         </div>
@@ -33,7 +33,7 @@ function ChatMessage({ message }: { message: Message }) {
       <div
         className={`chat-bubble prose ${isHuman && "bg-indigo-600 text-white"}`}
       >
-        {message.message === "THinking..." ? (
+        {message.message === "Thinking..." ? (
           <div className="flex items-center justify-center">
             <Loader2Icon className="size-5 animate-spin text-white" />
           </div>

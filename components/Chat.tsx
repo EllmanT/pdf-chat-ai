@@ -105,7 +105,7 @@ function Chat({ id }: { id: string }) {
             <Loader2Icon className="mt-20 size-20 animate-spin text-indigo-600" />
           </div>
         ) : (
-          <div>
+          <div className="p-5">
             {messages.length === 0 && (
               <ChatMessage
                 key="placeholder"
@@ -122,12 +122,6 @@ function Chat({ id }: { id: string }) {
             <div ref={bottomOfChatRef} />
           </div>
         )}
-        {messages.map((message) => (
-          <div key={message.id}>
-            <p>{message.message}</p>
-            <p></p>
-          </div>
-        ))}
       </div>
       <form
         onSubmit={handleSubmit}

@@ -20,17 +20,20 @@ function FileUploader() {
       router.push(`/dashboard/files/${fileId}`);
     }
   }, [fileId, router]);
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    // Do something with the files
-    console.log(acceptedFiles);
-    const file = acceptedFiles[0];
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      // Do something with the files
+      console.log(acceptedFiles);
+      const file = acceptedFiles[0];
 
-    if (file) {
-      await handleUpload(file);
-    } else {
-      // do something
-    }
-  }, []);
+      if (file) {
+        await handleUpload(file);
+      } else {
+        // do something
+      }
+    },
+    [handleUpload]
+  );
   const statusIcons: {
     [key in StatusText]: JSX.Element;
   } = {
