@@ -7,7 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 
 // number of docs the user is allowed to have
 const PRO_LIMIT = 100;
-const FREE_LIMIT = 5;
+const FREE_LIMIT = 2;
 
 export async function askQuestion(id: string, question: string) {
   auth.protect();

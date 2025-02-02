@@ -2,7 +2,6 @@ import { adminDb } from "@/firebaseAdmin";
 import stripe from "@/lib/stripe";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import React from "react";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {

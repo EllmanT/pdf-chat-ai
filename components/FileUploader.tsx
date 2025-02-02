@@ -1,5 +1,7 @@
 "use client";
 
+import { toast } from "@/hooks/use-toast";
+import useSubsription from "@/hooks/useSubscription";
 import useUpload, { StatusText } from "@/hooks/useUpload";
 import {
   CheckCheckIcon,
@@ -9,11 +11,12 @@ import {
   SaveIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect } from "react";
+import React, { JSX, useCallback, useEffect } from "react";
 
 import { useDropzone } from "react-dropzone";
 function FileUploader() {
   const { progress, status, fileId, handleUpload } = useUpload();
+  const { isOverFileLimit, filesLoading } = useSubsription();
   const router = useRouter();
   useEffect(() => {
     if (fileId) {
@@ -27,14 +30,24 @@ function FileUploader() {
       const file = acceptedFiles[0];
 
       if (file) {
-        await handleUpload(file);
+        if (!isOverFileLimit && !filesLoading) {
+          await handleUpload(file);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Free Plan File Limit Reached",
+            description:
+              "You have reached max number of document uploads .Upgrade your plan to add more docs",
+          });
+        }
       } else {
         // do something
       }
     },
-    [handleUpload]
+    [handleUpload, isOverFileLimit, filesLoading]
   );
   const statusIcons: {
+    // eslint-disable-next-line no-unused-vars
     [key in StatusText]: JSX.Element;
   } = {
     [StatusText.UPLOADING]: <RocketIcon className="size-20 text-indigo-600" />,
@@ -65,7 +78,7 @@ function FileUploader() {
             }`}
             role="progressbar"
             style={{
-              // @ts-ignore
+              // @ts-expect-error ERROR EXPECTED
               "--value": progress,
               "--size": "12rem",
               "--thickness": "1.3rem",
@@ -75,7 +88,7 @@ function FileUploader() {
           </div>
 
           {
-            // @ts-ignore
+            // @ts-expect-error ERROR EXPECTED
             statusIcons[status!]
           }
           <p className="animate-pulse text-indigo-600">

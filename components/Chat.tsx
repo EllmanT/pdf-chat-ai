@@ -41,6 +41,7 @@ function Chat({ id }: { id: string }) {
   }, [messages]);
 
   useEffect(() => {
+    console.log(snapshot);
     if (!snapshot) {
       console.log("nothing");
       return;

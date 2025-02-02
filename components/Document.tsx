@@ -20,7 +20,8 @@ function Document({
 }) {
   const router = useRouter();
   const [isDeleting, startTransition] = useTransition();
-  const { hasActiveMembership } = useSubsription();
+  const { hasActiveMembership, isOverFileLimit } = useSubsription();
+  console.log(isOverFileLimit);
 
   return (
     <div className="group flex h-60 w-48 cursor-pointer flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md transition-all hover:scale-105 hover:bg-indigo-600 hover:text-white">
@@ -41,7 +42,7 @@ function Document({
         <Button
           variant="outline"
           // For testing pupropses we enable it
-          disabled={isDeleting || hasActiveMembership}
+          // disabled={isDeleting || !hasActiveMembership}
           onClick={() => {
             const prompt = window.confirm(
               "Are you sure you want to delete the document?"
