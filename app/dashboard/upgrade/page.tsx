@@ -1,5 +1,6 @@
 "use client";
 import { createCheckoutSession } from "@/action/createCheckoutSession";
+import { createStripePortal } from "@/action/createStripePortal";
 import { Button } from "@/components/ui/button";
 import useSubsription from "@/hooks/useSubscription";
 import getStripe from "@/lib/stripe.js";
@@ -32,6 +33,9 @@ function PricingPage() {
       const stripe = await getStripe();
       if (!hasActiveMembership) {
         // create stripe portal...
+        const stripePortalUrl = await createStripePortal();
+
+        return router.push(stripePortalUrl);
       }
       const sessionId = await createCheckoutSession(userDetails);
       await stripe?.redirectToCheckout({

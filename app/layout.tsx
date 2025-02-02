@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import {
-  ClerkProvider,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +19,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="flex h-screen min-h-screen flex-col overflow-hidden">
+          <Toaster />
           {children}
         </body>
       </html>
